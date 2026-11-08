@@ -1,21 +1,50 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OCD Live - Les Opportunités C'est Dehors</title>
     <style>
+        /* --- VARIABLES DE COULEURS (Thèmes) --- */
+        :root {
+            /* Thème sombre par défaut */
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --bg-header: #1a1a1a;
+            --text-main: #e0e0e0;
+            --text-muted: #aaaaaa;
+            --border-color: #333;
+            --primary: #e67e22;
+            --primary-hover: #d35400;
+            --success: #27ae60;
+            --success-bg: #1a2b22;
+            --success-border: #2c4a3b;
+        }
+
+        [data-theme="light"] {
+            /* Thème clair */
+            --bg-body: #f9f9f9;
+            --bg-card: #ffffff;
+            --bg-header: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #dddddd;
+            --success-bg: #eafaf1;
+            --success-border: #c8e6c9;
+        }
+
         /* --- RESET & BASE --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
-            background-color: #121212; /* Fond sombre */
-            color: #e0e0e0;
+            background-color: var(--bg-body);
+            color: var(--text-main);
             line-height: 1.6;
         }
 
@@ -27,12 +56,13 @@
 
         /* --- HEADER --- */
         header {
+            position: relative;
             text-align: center;
-            padding: 40px 0 20px;
-            background-color: #1a1a1a;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            padding: 40px 0 30px;
+            background-color: var(--bg-header);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             margin-bottom: 40px;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid var(--border-color);
         }
 
         header img {
@@ -43,27 +73,86 @@
 
         header h1 {
             font-size: 2rem;
-            color: #ffffff;
+            color: var(--text-main);
             font-weight: 700;
             margin-bottom: 5px;
         }
 
         header p {
-            color: #aaaaaa;
+            color: var(--text-muted);
             font-size: 1.1rem;
         }
 
-        /* --- SECTION CHOIX (Cartes style Photo) --- */
+        /* Bouton Thème */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 1.5rem;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .theme-toggle:hover { border-color: var(--primary); }
+
+        /* --- SECTIONS INFOS --- */
+        .info-section {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 0 20px;
+        }
+        .info-section h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        .info-section p {
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 20px;
+            font-size: 1.1rem;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .step-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+        .step-card .step-num {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            opacity: 0.5;
+        }
+        .step-card h4 { margin-bottom: 10px; font-size: 1.2rem; }
+
+        /* --- SECTION CHOIX --- */
         .choice-section {
             text-align: center;
             margin-bottom: 50px;
         }
 
         .choice-section h2 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             margin-bottom: 25px;
-            color: #ffffff;
-            font-weight: 500;
+            color: var(--text-main);
         }
 
         .choice-buttons {
@@ -74,45 +163,43 @@
         }
 
         .choice-btn {
-            background-color: #1e1e1e;
-            border: 1px solid #333;
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
             padding: 25px 30px;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
             font-size: 1.1rem;
             font-weight: 600;
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* Alignement à gauche comme sur la photo */
+            align-items: flex-start;
             gap: 10px;
             min-width: 280px;
             text-align: left;
-            color: #fff;
+            color: var(--text-main);
         }
 
-        .choice-btn:hover {
-            border-color: #e67e22;
+        .choice-btn:hover, .choice-btn.active {
+            border-color: var(--primary);
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(230, 126, 34, 0.15);
         }
 
         .choice-btn.active {
-            border-color: #e67e22;
-            background-color: #2a1f17; /* Reflet orange sombre */
-            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.2);
+            background-color: var(--bg-body); /* Légère différence pour le focus */
+            border-width: 2px;
         }
 
         .choice-btn .icon {
             font-size: 1.5rem;
-            background: #2a2a2a;
+            background: var(--bg-body);
             padding: 10px;
             border-radius: 8px;
         }
 
         .choice-btn .sub-text {
             font-size: 0.85rem;
-            color: #888;
+            color: var(--text-muted);
             font-weight: normal;
             margin-top: 5px;
         }
@@ -120,12 +207,12 @@
         /* --- SECTION CALENDRIER & HEURES --- */
         .calendar-section, .time-section {
             display: none;
-            background: #1e1e1e;
+            background: var(--bg-card);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             margin-bottom: 30px;
-            border: 1px solid #333;
+            border: 1px solid var(--border-color);
         }
 
         .calendar-section.active, .time-section.active {
@@ -139,31 +226,20 @@
             margin-bottom: 20px;
         }
 
-        .calendar-header h3 {
-            font-size: 1.3rem;
-            color: #fff;
-        }
+        .calendar-header h3 { font-size: 1.3rem; color: var(--text-main); }
 
         .nav-btn {
-            background: #333;
-            color: white;
-            border: none;
+            background: var(--bg-body);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
             padding: 8px 15px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.3s;
         }
         
-        .nav-btn:hover {
-            background: #e67e22;
-        }
-
-        .nav-btn:disabled {
-            background: #222;
-            color: #555;
-            cursor: not-allowed;
-        }
+        .nav-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--bg-card); }
 
         .calendar-grid, .time-grid {
             display: grid;
@@ -173,13 +249,13 @@
         }
 
         .time-grid {
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Grille adaptative pour les heures */
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
             margin-top: 15px;
         }
 
         .calendar-day-name {
             font-weight: 600;
-            color: #888;
+            color: var(--text-muted);
             padding: 10px 0;
             font-size: 0.9rem;
         }
@@ -188,26 +264,23 @@
             padding: 12px 0;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s;
             font-weight: 500;
-            background: #2a2a2a;
-            color: #ddd;
+            background: var(--bg-body);
+            color: var(--text-main);
+            border: 1px solid transparent;
         }
 
         .calendar-day:hover:not(.empty), .time-slot:hover {
-            background-color: #444;
+            border-color: var(--primary);
         }
 
         .calendar-day.selected, .time-slot.selected {
-            background-color: #e67e22;
+            background-color: var(--primary);
             color: #fff;
             font-weight: bold;
         }
 
-        .calendar-day.empty {
-            background: transparent;
-            cursor: default;
-        }
+        .calendar-day.empty { background: transparent; cursor: default; }
 
         /* --- SECTION PACKAGES --- */
         .packages-section {
@@ -215,15 +288,13 @@
             margin-bottom: 50px;
         }
 
-        .packages-section.active {
-            display: block;
-        }
+        .packages-section.active { display: block; }
 
         .packages-section h2 {
             text-align: center;
             font-size: 1.5rem;
             margin-bottom: 25px;
-            color: #e67e22;
+            color: var(--primary);
         }
 
         .packages-grid {
@@ -233,55 +304,38 @@
         }
 
         .package-card {
-            background: #1e1e1e;
+            background: var(--bg-card);
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            border-top: 4px solid #e67e22;
-            transition: transform 0.2s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--primary);
             display: flex;
             flex-direction: column;
-            border: 1px solid #333;
-            border-top-width: 4px;
         }
 
         .package-card:hover {
             transform: translateY(-5px);
-            border-color: #e67e22;
+            border-color: var(--primary);
         }
 
-        .package-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .package-card .duration {
-            color: #aaa;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-
-        .package-card .price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #e67e22;
-            margin-bottom: 15px;
-        }
-
+        .package-card h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--text-main); }
+        .package-card .duration { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; }
+        .package-card .price { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 15px; }
+        
         .package-card .bonus {
             font-size: 0.9rem;
-            color: #27ae60;
-            background: #1a2b22; /* Vert très sombre */
+            color: var(--success);
+            background: var(--success-bg);
             padding: 10px;
             border-radius: 6px;
             margin-bottom: 20px;
             flex-grow: 1;
-            border: 1px solid #2c4a3b;
+            border: 1px solid var(--success-border);
         }
 
         .package-card button {
-            background-color: #e67e22;
+            background-color: var(--primary);
             color: #fff;
             border: none;
             padding: 12px;
@@ -289,14 +343,11 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
             width: 100%;
             margin-top: auto;
         }
 
-        .package-card button:hover {
-            background-color: #d35400;
-        }
+        .package-card button:hover { background-color: var(--primary-hover); }
 
         /* --- MODAL DE RESERVATION (FORMULAIRE) --- */
         .modal {
@@ -310,73 +361,43 @@
             overflow-y: auto;
         }
 
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
 
         .modal-content {
-            background: #1e1e1e;
+            background: var(--bg-card);
             padding: 30px;
             border-radius: 12px;
             max-width: 500px;
             width: 90%;
             position: relative;
             margin: 20px auto;
-            border: 1px solid #444;
+            border: 1px solid var(--border-color);
         }
 
-        .modal-content h3 {
-            color: #fff;
-            margin-bottom: 5px;
-            text-align: center;
-        }
+        .modal-content h3 { color: var(--text-main); margin-bottom: 5px; text-align: center; }
+        .modal-subtitle { text-align: center; color: var(--primary); font-weight: bold; margin-bottom: 20px; }
 
-        .modal-subtitle {
-            text-align: center;
-            color: #e67e22;
-            font-weight: bold;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; color: var(--text-main); }
+        
         .form-group input {
             width: 100%;
             padding: 10px;
-            border: 1px solid #444;
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             font-size: 1rem;
-            background: #2a2a2a;
-            color: #fff;
+            background: var(--bg-body);
+            color: var(--text-main);
         }
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #e67e22;
-        }
+        .form-group input:focus { outline: none; border-color: var(--primary); }
 
-        .modal-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
+        .modal-actions { display: flex; justify-content: space-between; margin-top: 20px; }
+        
         .btn-cancel {
-            background: #444;
-            color: #fff;
-            border: none;
+            background: var(--bg-body);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
@@ -384,7 +405,7 @@
         }
 
         .btn-submit {
-            background: #27ae60;
+            background: var(--success);
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -397,9 +418,9 @@
         footer {
             text-align: center;
             padding: 20px;
-            color: #666;
+            color: var(--text-muted);
             font-size: 0.9rem;
-            border-top: 1px solid #333;
+            border-top: 1px solid var(--border-color);
             margin-top: 40px;
         }
 
@@ -409,6 +430,7 @@
             .choice-btn { width: 100%; }
             .calendar-day { padding: 10px 0; font-size: 0.9rem; }
             .time-grid { grid-template-columns: repeat(4, 1fr); }
+            header h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -416,13 +438,36 @@
 
     <!-- HEADER -->
     <header>
-        <!-- Assurez-vous que votre logo a un fond transparent pour le mode sombre -->
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Changer de thème">🌙</button>
         <img src="logo.png" alt="Logo OCD Live">
         <h1>Ton produit en direct devant toute l'Afrique.</h1>
         <p>OCD - Les Opportunités C'est Dehors</p>
     </header>
 
     <div class="container">
+
+        <!-- SECTION COMMENT CA MARCHE -->
+        <section class="info-section">
+            <h2>Comment ça marche ?</h2>
+            <p>Propulsez votre business en quelques clics. Réservez votre créneau, préparez votre produit, et nous nous occupons de la technique.</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">01</div>
+                    <h4>Choisissez votre format</h4>
+                    <p>En présentiel dans notre studio pro à Lomé, ou à distance depuis chez vous.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">02</div>
+                    <h4>Sélectionnez la date</h4>
+                    <p>Choisissez le jour et l'heure qui vous conviennent dans notre calendrier.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">03</div>
+                    <h4>Réservez votre pack</h4>
+                    <p>Adaptez la durée de votre live et profitez de nos bonus de visibilité (House of Challenge).</p>
+                </div>
+            </div>
+        </section>
 
         <!-- SECTION 1 : CHOIX -->
         <section class="choice-section" id="choiceSection">
@@ -529,9 +574,7 @@
             <h3>Finaliser votre réservation</h3>
             <div class="modal-subtitle" id="recapPackage"></div>
             
-            <!-- Le formulaire envoie les données à FormSubmit -->
             <form action="https://formsubmit.co/pacokamegne@gmail.com" method="POST">
-                <!-- Champs cachés pour l'e-mail -->
                 <input type="hidden" name="_subject" value="Nouvelle réservation OCD !">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="Package" id="inputPackage">
@@ -568,14 +611,27 @@
     </footer>
 
     <script>
+        // --- GESTION DU THEME (CLAIR / SOMBRE) ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeBtn = document.getElementById('themeBtn');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                themeBtn.textContent = '☀️';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeBtn.textContent = '🌙';
+            }
+        }
+
         // --- VARIABLES GLOBALES ---
         let currentMode = null;
         let selectedDate = null;
         let selectedTime = null;
         
-        // Gestion du calendrier
         let currentYear = 2026;
-        let currentMonth = 11; // 11 = Décembre (0-indexé)
+        let currentMonth = 11; // 11 = Décembre
         
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
@@ -592,7 +648,6 @@
                 document.getElementById('btn-distance').classList.add('active');
             }
 
-            // Reset du calendrier à Décembre 2026 quand on change de mode
             currentYear = 2026;
             currentMonth = 11;
             selectedDate = null;
@@ -617,7 +672,6 @@
                 currentYear--;
             }
             
-            // Bloquer si on essaie d'aller avant Décembre 2026
             if (currentYear === 2026 && currentMonth < 11) {
                 currentMonth = 11;
                 return;
@@ -625,7 +679,6 @@
 
             generateCalendar(currentYear, currentMonth);
             
-            // Cacher les heures et packages car on a changé de mois
             document.getElementById('timeSection').classList.remove('active');
             document.getElementById('packagesSection').classList.remove('active');
             selectedDate = null;
@@ -638,10 +691,8 @@
             grid.innerHTML = '';
             document.getElementById('monthLabel').textContent = `${monthNames[month]} ${year}`;
 
-            // Gestion des boutons Précédent/Suivant
             document.getElementById('prevMonth').disabled = (year === 2026 && month === 11);
 
-            // Noms des jours
             const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
             days.forEach(day => {
                 const div = document.createElement('div');
@@ -650,19 +701,16 @@
                 grid.appendChild(div);
             });
 
-            // Calcul du premier jour
             const firstDay = new Date(year, month, 1);
             let startDay = firstDay.getDay(); 
             if (startDay === 0) startDay = 7; 
 
-            // Jours vides avant le 1er
             for (let i = 1; i < startDay; i++) {
                 const div = document.createElement('div');
                 div.className = 'calendar-day empty';
                 grid.appendChild(div);
             }
 
-            // Jours du mois
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             for (let i = 1; i <= daysInMonth; i++) {
                 const div = document.createElement('div');
@@ -678,24 +726,21 @@
             document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
             selectedDate = `${day} ${monthNames[month]} ${year}`;
-            selectedTime = null; // Reset l'heure si on change de jour
+            selectedTime = null;
 
-            // Afficher la section des heures
             document.getElementById('timeSection').classList.add('active');
             generateTimeSlots();
             
-            // Cacher les packages tant que l'heure n'est pas choisie
             document.getElementById('packagesSection').classList.remove('active');
             
             document.getElementById('timeSection').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // --- GÉNÉRATION DES HEURES (8H À 22H) ---
+        // --- GÉNÉRATION DES HEURES ---
         function generateTimeSlots() {
             const timeGrid = document.getElementById('timeGrid');
             timeGrid.innerHTML = '';
             
-            // Boucle de 8h à 22h
             for (let hour = 8; hour <= 22; hour++) {
                 const timeString = `${hour.toString().padStart(2, '0')}:00`;
                 const div = document.createElement('div');
@@ -712,22 +757,19 @@
             element.classList.add('selected');
             selectedTime = timeString;
 
-            // Afficher les packages maintenant qu'on a le jour et l'heure
             document.getElementById('packagesSection').classList.add('active');
             document.getElementById('packagesSection').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // --- LOGIQUE DU FORMULAIRE ---
+        // --- FORMULAIRE ---
         function openReservationForm(packageName, duration, price) {
             if (!selectedDate || !selectedTime) {
                 alert("Veuillez d'abord sélectionner une date ET une heure dans le calendrier.");
                 return;
             }
             
-            // Mise à jour du récapitulatif
             document.getElementById('recapPackage').textContent = `${packageName} (${duration}) - ${price}`;
             
-            // Remplissage des champs cachés du formulaire
             document.getElementById('inputPackage').value = `${packageName} (${duration}) - ${price}`;
             document.getElementById('inputDate').value = `${selectedDate} à ${selectedTime}`;
             document.getElementById('inputMode').value = (currentMode === 'presentiel') ? 'Présentiel à Lomé' : 'À Distance (Monde)';
