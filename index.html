@@ -780,6 +780,15 @@
         function closeModal() {
             document.getElementById('reservationModal').classList.remove('active');
         }
+                // Forcer l'icône du soleil au démarrage si on est en mode clair
+        document.addEventListener("DOMContentLoaded", function() {
+            if (document.documentElement.getAttribute('data-theme') === 'light') {
+                document.getElementById('themeBtn').textContent = '☀️';
+            }
+        });
+        // ---------------------
+
     </script>
 </body>
 </html>
+
