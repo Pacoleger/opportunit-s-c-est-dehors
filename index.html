@@ -7,30 +7,32 @@
     <style>
         /* --- VARIABLES DE COULEURS (Thèmes) --- */
         :root {
-            /* Thème sombre par défaut */
-            --bg-body: #121212;
-            --bg-card: #1e1e1e;
-            --bg-header: #1a1a1a;
-            --text-main: #e0e0e0;
-            --text-muted: #aaaaaa;
-            --border-color: #333;
-            --primary: #e67e22;
-            --primary-hover: #d35400;
-            --success: #27ae60;
-            --success-bg: #1a2b22;
-            --success-border: #2c4a3b;
-        }
-
-        [data-theme="light"] {
-            /* Thème clair */
+            /* Thème clair (par défaut) */
             --bg-body: #f9f9f9;
             --bg-card: #ffffff;
             --bg-header: #ffffff;
             --text-main: #333333;
             --text-muted: #666666;
             --border-color: #dddddd;
+            --primary: #e67e22;
+            --primary-hover: #d35400;
+            --success: #27ae60;
             --success-bg: #eafaf1;
             --success-border: #c8e6c9;
+            --shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        [data-theme="dark"] {
+            /* Thème sombre */
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --bg-header: #1a1a1a;
+            --text-main: #e0e0e0;
+            --text-muted: #aaaaaa;
+            --border-color: #333333;
+            --success-bg: #1a2b22;
+            --success-border: #2c4a3b;
+            --shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         /* --- RESET & BASE --- */
@@ -60,7 +62,7 @@
             text-align: center;
             padding: 40px 0 30px;
             background-color: var(--bg-header);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
             margin-bottom: 40px;
             border-bottom: 1px solid var(--border-color);
         }
@@ -100,7 +102,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow);
         }
         .theme-toggle:hover { border-color: var(--primary); }
 
@@ -186,7 +188,7 @@
         }
 
         .choice-btn.active {
-            background-color: var(--bg-body); /* Légère différence pour le focus */
+            background-color: var(--bg-body);
             border-width: 2px;
         }
 
@@ -210,7 +212,7 @@
             background: var(--bg-card);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
             margin-bottom: 30px;
             border: 1px solid var(--border-color);
         }
@@ -307,7 +309,7 @@
             background: var(--bg-card);
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
             border-top: 4px solid var(--primary);
             display: flex;
@@ -374,8 +376,7 @@
             border: 1px solid var(--border-color);
         }
 
-        .modal-content h3 { color: var(--text-main); margin-bottom: 5px; text-align: center; }
-        .modal-subtitle { text-align: center; color: var(--primary); font-weight: bold; margin-bottom: 20px; }
+        .modal-content h3 { color: var(--text-main); margin-bottom: 15px; text-align: center; }
 
         .form-group { margin-bottom: 15px; text-align: left; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; color: var(--text-main); }
@@ -438,7 +439,7 @@
 
     <!-- HEADER -->
     <header>
-        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Changer de thème">🌙</button>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Changer de thème">☀️</button>
         <img src="logo.png" alt="Logo OCD Live">
         <h1>Ton produit en direct devant toute l'Afrique.</h1>
         <p>OCD - Les Opportunités C'est Dehors</p>
@@ -464,7 +465,7 @@
                 <div class="step-card">
                     <div class="step-num">03</div>
                     <h4>Réservez votre pack</h4>
-                    <p>Adaptez la durée de votre live et profitez de nos bonus de visibilité (House of Challenge et Bovann lui-même).</p>
+                    <p>Adaptez la durée de votre live et profitez de nos bonus de visibilité (House of Challenge).</p>
                 </div>
             </div>
         </section>
@@ -572,8 +573,18 @@
     <div class="modal" id="reservationModal">
         <div class="modal-content">
             <h3>Finaliser votre réservation</h3>
-            <div class="modal-subtitle" id="recapPackage"></div>
             
+            <!-- Affichage clair du créneau choisi -->
+            <div style="font-size: 1.1rem; color: var(--text-main); background: var(--bg-body); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px; text-align: center;">
+                <strong>Date et Heure choisies :</strong><br>
+                <span id="recapDate" style="color: var(--primary); font-size: 1.2rem;"></span><br>
+                <span id="recapPackage" style="font-size: 0.95rem; color: var(--text-muted);"></span>
+            </div>
+            
+            <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-bottom: 20px;">
+                ⚠️ Votre créneau sera définitivement bloqué après validation par notre équipe. En cas de conflit (créneau déjà pris), nous vous contacterons pour vous proposer une autre heure.
+            </p>
+
             <form action="https://formsubmit.co/pacokamegne@gmail.com" method="POST">
                 <input type="hidden" name="_subject" value="Nouvelle réservation OCD !">
                 <input type="hidden" name="_captcha" value="false">
@@ -616,14 +627,21 @@
             const html = document.documentElement;
             const themeBtn = document.getElementById('themeBtn');
             
-            if (html.getAttribute('data-theme') === 'dark') {
-                html.setAttribute('data-theme', 'light');
-                themeBtn.textContent = '☀️';
-            } else {
+            if (html.getAttribute('data-theme') === 'light') {
                 html.setAttribute('data-theme', 'dark');
                 themeBtn.textContent = '🌙';
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeBtn.textContent = '☀️';
             }
         }
+
+        // S'assurer que l'icône est un soleil au démarrage
+        document.addEventListener("DOMContentLoaded", function() {
+            if (document.documentElement.getAttribute('data-theme') === 'light') {
+                document.getElementById('themeBtn').textContent = '☀️';
+            }
+        });
 
         // --- VARIABLES GLOBALES ---
         let currentMode = null;
@@ -768,7 +786,8 @@
                 return;
             }
             
-            document.getElementById('recapPackage').textContent = `${packageName} (${duration}) - ${price}`;
+            document.getElementById('recapDate').textContent = `${selectedDate} à ${selectedTime}`;
+            document.getElementById('recapPackage').textContent = `Package : ${packageName} (${duration}) - ${price}`;
             
             document.getElementById('inputPackage').value = `${packageName} (${duration}) - ${price}`;
             document.getElementById('inputDate').value = `${selectedDate} à ${selectedTime}`;
@@ -780,15 +799,6 @@
         function closeModal() {
             document.getElementById('reservationModal').classList.remove('active');
         }
-                // Forcer l'icône du soleil au démarrage si on est en mode clair
-        document.addEventListener("DOMContentLoaded", function() {
-            if (document.documentElement.getAttribute('data-theme') === 'light') {
-                document.getElementById('themeBtn').textContent = '☀️';
-            }
-        });
-        // ---------------------
-
     </script>
 </body>
 </html>
-
